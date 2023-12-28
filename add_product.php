@@ -2,11 +2,24 @@
 // add_product.php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get data from the form
-    $productName = $_POST["productName"];
-    $productQuantity = $_POST["productQuantity"];
-    $bulkPrice = $_POST["bulkPrice"];
-    $retailPrice = $_POST["retailPrice"];
+    // Ensure required parameters are set
+    $requiredParams = ["productName", "productQuantity", "bulkPrice", "retailPrice"];
+    foreach ($requiredParams as $param) {
+        if (!isset($_POST[$param])) {
+            die("Error: Missing required parameter - $param");
+        }
+    }
+
+    // Sanitize input values
+    $productName = htmlspecialchars($_POST["productName"]);
+    $productQuantity = (int)$_POST["productQuantity"];
+    $bulkPrice = (float)$_POST["bulkPrice"];
+    $retailPrice = (float)$_POST["retailPrice"];
+
+    // Validate numeric values
+    if (!is_numeric($productQuantity) || !is_numeric($bulkPrice) || !is_numeric($retailPrice)) {
+        die("Error: Invalid numeric input");
+    }
 
     // Calculate cost and profit difference
     $quantityCost = $bulkPrice * $productQuantity;
@@ -19,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Save product details to products_local.json
-    $newProduct = array(
+    $newProduct = [
         "productName" => $productName,
         "productQuantity" => $productQuantity,
         "bulkPrice" => $bulkPrice,
@@ -27,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "quantityCost" => $quantityCost,
         "retailCost" => $retailCost,
         "profitDifference" => $profitDifference
-    );
+    ];
 
     // Get existing products from local storage
     $existingProducts = json_decode(file_get_contents("products_local.json"), true) ?: [];
