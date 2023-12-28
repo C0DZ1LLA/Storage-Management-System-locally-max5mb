@@ -6,15 +6,19 @@ function addProduct() {
     var bulkPrice = parseFloat(document.getElementById('bulkPrice').value);
     var retailPrice = parseFloat(document.getElementById('retailPrice').value);
     var isBox = document.getElementById('isBox').checked;
+    var boxQuantity = isBox ? parseInt(document.getElementById('boxQuantity').value, 10) || 1 : 1; // Default to 1 if not provided
 
     // Calculate cost and profit difference
     var quantityCost = bulkPrice * productQuantity;
     var retailCost = retailPrice * productQuantity;
     var profitDifference = (retailPrice - bulkPrice) * productQuantity;
 
-    // If it's a box, double the profit difference
+    // If it's a box, update properties for the box
     if (isBox) {
-        profitDifference *= 2;
+        productQuantity *= boxQuantity; // Update total quantity
+        quantityCost = bulkPrice * productQuantity; // Update total quantity cost
+        retailCost = retailPrice * productQuantity; // Update total retail cost
+        profitDifference = (retailPrice - bulkPrice) * productQuantity; // Update total profit difference
     }
 
     // Create a product object
@@ -27,6 +31,14 @@ function addProduct() {
         retailCost: retailCost,
         profitDifference: profitDifference
     };
+
+    // If it's a box, add box-related properties to the new product
+    if (isBox) {
+        product.isBox = true;
+        product.boxQuantity = boxQuantity;
+        product.boxBulkPrice = bulkPrice * boxQuantity;
+        product.boxRetailPrice = retailPrice * boxQuantity;
+    }
 
     // Get existing products from local storage
     var existingProducts = JSON.parse(localStorage.getItem('products')) || [];
@@ -43,6 +55,7 @@ function addProduct() {
     // Update total profit difference
     updateTotalProfit();
 }
+
 
 function updateProductList() {
     // Get products from local storage
