@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="scripts_local.js"></script>
     <title>Storage Management System</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -27,6 +28,10 @@
 
             <label for="isBox">Box:</label>
             <input type="checkbox" id="isBox" name="isBox">
+            
+            <!-- Box Quantity input -->
+            <label for="boxQuantity">Box Quantity:</label>
+            <input type="number" id="boxQuantity" name="boxQuantity" min="1">
 
             <button type="button" onclick="addProduct()">Add Product</button>
         </form>
@@ -41,6 +46,9 @@
             <p>Total Profit Difference: $<span id="totalProfitValue">0.00</span></p>
         </div>
     </div>
+</body>
+</html>
+
 
     <!-- Make sure these paths are correct -->
 <script src="scripts.js"></script>
