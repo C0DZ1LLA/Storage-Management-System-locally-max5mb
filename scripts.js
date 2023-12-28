@@ -8,10 +8,7 @@ function addProduct() {
     var isBox = document.getElementById('isBox').checked;
     var boxQuantity = isBox ? parseInt(document.getElementById('boxQuantity').value, 10) || 1 : 1; // Default to 1 if not provided
 
-    if (isNaN(productQuantity) || isNaN(bulkPrice) || isNaN(retailPrice) || isNaN(boxQuantity)) {
-        console.error("Invalid input. Please enter valid numeric values.");
-        return;
-    }
+    
     // Calculate cost and profit difference
     var quantityCost = bulkPrice * productQuantity;
     var retailCost = retailPrice * productQuantity;
