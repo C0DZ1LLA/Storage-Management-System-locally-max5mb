@@ -72,7 +72,7 @@ function updateProductList() {
 
         // Format numbers only if they are defined and not null
         function formatNumber(number) {
-            return number !== undefined && number !== null ? "$" + number.toFixed(2) : "";
+            return number !== undefined && number !== null ? "€" + number.toFixed(2) : "";
         }
 
         productDiv.innerHTML =
