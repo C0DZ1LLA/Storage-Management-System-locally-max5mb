@@ -1,5 +1,5 @@
 <?php
-// display_products_local.php
+// display_products.php
 
 // Get existing products from local storage
 $existingProducts = json_decode(file_get_contents("products_local.json"), true) ?: [];

@@ -1,4 +1,4 @@
-// scripts_local.js
+// scripts.js
 
 function addProduct() {
     var productName = document.getElementById('productName').value;

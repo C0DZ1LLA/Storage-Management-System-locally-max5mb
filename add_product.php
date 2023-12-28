@@ -1,5 +1,5 @@
 <?php
-// add_product_local.php
+// add_product.php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get data from the form
