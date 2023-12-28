@@ -1,54 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storage Management System</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Storage Management System</h1>
+// scripts.js
 
-        <!-- Product Form -->
-        <form id="productForm">
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" name="productName" required>
+function addProduct() {
+    var productName = document.getElementById('productName').value;
+    var productQuantity = parseInt(document.getElementById('productQuantity').value, 10);
+    var bulkPrice = parseFloat(document.getElementById('bulkPrice').value);
+    var retailPrice = parseFloat(document.getElementById('retailPrice').value);
+    var isBox = document.getElementById('isBox').checked;
+    var boxQuantity = isBox ? parseInt(document.getElementById('boxQuantity').value, 10) || 1 : 1; // Default to 1 if not provided
 
-            <label for="productQuantity">Quantity:</label>
-            <input type="number" id="productQuantity" name="productQuantity" required>
+    if (isNaN(productQuantity) || isNaN(bulkPrice) || isNaN(retailPrice) || isNaN(boxQuantity)) {
+        console.error("Invalid input. Please enter valid numeric values.");
+        return;
+    }
+    // Calculate cost and profit difference
+    var quantityCost = bulkPrice * productQuantity;
+    var retailCost = retailPrice * productQuantity;
+    var profitDifference = (retailPrice - bulkPrice) * productQuantity;
 
-            <label for="bulkPrice">Bulk Price:</label>
-            <input type="number" id="bulkPrice" name="bulkPrice" step="0.01" required>
+    // If it's a box, update properties for the box
+    if (isBox) {
+        productQuantity *= boxQuantity; // Update total quantity
+        quantityCost = bulkPrice * productQuantity; // Update total quantity cost
+        retailCost = retailPrice * productQuantity; // Update total retail cost
+        profitDifference = (retailPrice - bulkPrice) * productQuantity; // Update total profit difference
+    }
 
-            <label for="retailPrice">Retail Price:</label>
-            <input type="number" id="retailPrice" name="retailPrice" step="0.01" required>
+    // Create a product object
+    var product = {
+        productName: productName,
+        productQuantity: productQuantity,
+        bulkPrice: bulkPrice,
+        retailPrice: retailPrice,
+        quantityCost: quantityCost,
+        retailCost: retailCost,
+        profitDifference: profitDifference
+    };
 
-            <label for="isBox">Box:</label>
-            <input type="checkbox" id="isBox" name="isBox">
-            
-            <!-- Box Quantity input -->
-            <label for="boxQuantity">Box Quantity:</label>
-            <input type="number" id="boxQuantity" name="boxQuantity" min="1">
+    // If it's a box, add box-related properties to the new product
+    if (isBox) {
+        product.isBox = true;
+        product.boxQuantity = boxQuantity;
+        product.boxBulkPrice = bulkPrice * boxQuantity;
+        product.boxRetailPrice = retailPrice * boxQuantity;
+    }
 
-            <button type="button" onclick="addProduct()">Add Product</button>
-        </form>
+    // Get existing products from local storage
+    var existingProducts = JSON.parse(localStorage.getItem('products')) || [];
 
-        <!-- Display Products -->
-        <div id="productList">
-            <!-- Product details will be displayed here -->
-        </div>
+    // Add the new product to the array
+    existingProducts.push(product);
 
-        <!-- Total Profit Difference -->
-        <div id="totalProfit">
-            <p>Total Profit Difference: $<span id="totalProfitValue">0.00</span></p>
-        </div>
-    </div>
+    // Save the updated array back to local storage
+    localStorage.setItem('products', JSON.stringify(existingProducts));
 
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    // Update the product list
+    updateProductList();
 
-    <!-- Include Local Scripts -->
-    <script src="scripts.js"></script>
-</body>
-</html>
+    // Update total profit difference
+    updateTotalProfit();
+}
+
+
+function updateProductList() {
+    // Get products from local storage
+    var storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+    // Display products
+    var productListDiv = document.getElementById('productList');
+    productListDiv.innerHTML = ''; // Clear previous content
+
+    storedProducts.forEach(function (product) {
+        var productDiv = document.createElement('div');
+        productDiv.className = 'product';
+
+        // Format numbers only if they are defined and not null
+        function formatNumber(number) {
+            return number !== undefined && number !== null ? "$" + number.toFixed(2) : "";
+        }
+
+        productDiv.innerHTML =
+            "<p>Name: " + (product.productName || '') + "</p>" +
+            "<p>Quantity: " + (product.productQuantity || '') + "</p>" +
+            "<p>Bulk Price: " + formatNumber(product.bulkPrice) + "</p>" +
+            "<p>Retail Price: " + formatNumber(product.retailPrice) + "</p>" +
+            "<p>Quantity Cost: " + formatNumber(product.quantityCost) + "</p>" +
+            "<p>Retail Cost: " + formatNumber(product.retailCost) + "</p>" +
+            "<p>Profit Difference: " + formatNumber(product.profitDifference) + "</p>";
+
+        productListDiv.appendChild(productDiv);
+    });
+}
+
+
+function updateTotalProfit() {
+    // Get products from local storage
+    var storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+    // Calculate total profit difference
+    var totalProfit = storedProducts.reduce(function (total, product) {
+        return total + product.profitDifference;
+    }, 0);
+
+    // Update total profit value in the UI
+    document.getElementById('totalProfitValue').textContent = totalProfit.toFixed(2);
+}
+
+// Initial product list update
+updateProductList();
+// Initial total profit update
+updateTotalProfit();
