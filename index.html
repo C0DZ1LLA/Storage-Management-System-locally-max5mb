@@ -7,38 +7,446 @@
     <script src="scripts.js"></script>
     <title>Loberca Coffee Island Product System</title>
     <link rel="stylesheet" href="styles.css">
-
+    <style>
+        .note-container {
+          max-width: 400px;
+          margin: 20px auto;
+          padding: 20px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+      
+        h2.animated-box-shadow {
+          text-align: center;
+          padding: 10px;
+          background-color: #3498db;
+          color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+      
+        textarea.animated-box-shadow {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          resize: vertical;
+        }
+      
+        button.animated-box-shadow {
+          width: 100%;
+          padding: 8px;
+          cursor: pointer;
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+        }
+      
+        button.animated-box-shadow:hover {
+          background-color: #2980b9;
+        }
+      
+        .saved-notes-container {
+          margin-top: 20px;
+          max-height: 100px;
+          overflow-y: auto;
+        }
+      
+        .saved-note {
+          margin-bottom: 5px;
+          padding: 5px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background-color: #f9f9f9;
+        }
+      </style>
+      
+    <style>
+        .calculator-container {
+          max-width: 400px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+      
+        h2.animated-box-shadow {
+          text-align: center;
+          padding: 10px;
+          background-color: #3498db;
+          color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+      
+        form {
+          margin-top: 20px;
+        }
+      
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+      
+        input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+        }
+      
+        .calculator-buttons {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+        }
+      
+        button {
+          width: 23%;
+          padding: 8px;
+          cursor: pointer;
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+        }
+      
+        button:hover {
+          background-color: #2980b9;
+        }
+      
+        p#result {
+          font-weight: bold;
+        }
+      
+        .vat-calculation {
+          margin-top: 20px;
+        }
+      
+        .vat-calculation label {
+          display: block;
+          margin-bottom: 5px;
+        }
+      
+        .vat-calculation input {
+          width: 100%;
+          padding: 8px;
+          box-sizing: border-box;
+          margin-bottom: 10px;
+        }
+      
+        .vat-calculation button {
+          width: 100%;
+          padding: 8px;
+          cursor: pointer;
+          background-color: #27ae60;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+        }
+      
+        .vat-calculation button:hover {
+          background-color: #219f56;
+        }
+      
+        p#vatResult {
+          font-weight: bold;
+        }
+      </style>
+      
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        .calculator-container, .note-container, .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+        }
+    
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+    
+        form {
+            display: grid;
+            gap: 10px;
+        }
+    
+        label {
+            font-weight: bold;
+        }
+    
+        input, textarea, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #45a049;
+        }
+    
+        .calculator-buttons button {
+            background-color: #008CBA;
+            color: #fff;
+        }
+    
+        .calculator-buttons button:hover {
+            background-color: #0077A6;
+        }
+    
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+    
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    
+        .close:hover {
+            color: #555;
+        }
+    
+        #totalProfit {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    
+        .product button {
+            margin-top: 10px;
+        }
+    
+        .animated-box-shadow {
+            transition: box-shadow 0.3s ease-in-out;
+        }
+    
+        .animated-slide-in {
+            animation: slide-in 0.5s ease-in-out;
+        }
+    
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
+    <style>
+        .container {
+          max-width: 800px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+      
+        h1.animated-box-shadow {
+          color: #333;
+          text-align: center;
+          padding: 10px;
+          background-color: #3498db;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+      
+        form {
+          display: grid;
+          gap: 10px;
+        }
+      
+        label.animated-box-shadow {
+          font-weight: bold;
+        }
+      
+        input.animated-box-shadow {
+          width: 100%;
+          padding: 8px;
+          box-sizing: border-box;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+      
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          justify-content: center;
+          align-items: center;
+          z-index: 999;
+        }
+      
+        .modal-content {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          max-width: 400px;
+          margin: auto;
+        }
+      
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 20px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+      
+        .close:hover {
+          color: #555;
+        }
+      
+        #totalProfit {
+          margin-top: 20px;
+        }
+      
+        #productList {
+          margin-top: 20px;
+        }
+      
+        .product {
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 10px;
+          margin: 10px 0;
+        }
+      
+        .animated-box-shadow {
+          transition: box-shadow 0.3s ease-in-out;
+        }
+      
+        .animated-slide-in {
+          animation: slide-in 0.5s ease-in-out;
+        }
+      
+        @keyframes slide-in {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      </style>
+      
+    
+    
 </head>
 <body>
         <!-- Calculator Section -->
-        <div class="calculator">
+        <div class="calculator-container">
             <h2 class="animated-box-shadow animated-slide-in">Calculator</h2>
 
             <form id="calculatorForm">
-                <label class="animated-box-shadow animated-slide-in" for="num1">Number 1 & VAT Number:</label>
+                <label class="animated-box-shadow animated-slide-in" for="num1">Number 1:</label>
                 <input class="animated-box-shadow animated-slide-in" type="number" id="num1" name="num1" required>
 
                 <label class="animated-box-shadow animated-slide-in" for="num2">Number 2:</label>
                 <input class="animated-box-shadow animated-slide-in" type="number" id="num2" name="num2" required>
-
-                <label class="animated-box-shadow animated-slide-in" for="vatPercentage">VAT Percentage:</label>
-                <input class="animated-box-shadow animated-slide-in" type="number" id="vatPercentage" name="vatPercentage" min="0">
 
                 <div class="calculator-buttons">
                     <button type="button" onclick="calculate('add')">Add</button>
                     <button type="button" onclick="calculate('subtract')">Subtract</button>
                     <button type="button" onclick="calculate('multiply')">Multiply</button>
                     <button type="button" onclick="calculate('divide')">Divide</button>
-                    <button type="button" onclick="calculate('vat')">Calculate VAT</button>
+                   
                 </div>
 
                 <p id="result">Result: <span id="calcResult">0.00</span></p>
+                      <!-- New section for VAT calculation with custom input -->
+                      <div class="vat-calculation">
+                        <label for="vatCalculation">VAT Calculation:</label>
+                        <input type="number" id="vatPercentage" placeholder="Enter VAT Percentage">
+                        <button type="button" onclick="calculateVAT()">Calculate VAT</button>
+                        <p id="vatResult">VAT Result: <span id="vatCalculationResult">0.00</span></p>
+                    </div>
+
             </form>
-    </form>
-</div>
+            <!-- Text Input and Display Container -->
+            <div class="note-container">
+                <h2 class="animated-box-shadow animated-slide-in">Save a Note</h2>
+        
+                <!-- Add a textarea for note input -->
+                <textarea id="noteInput" class="animated-box-shadow animated-slide-in" placeholder="Type your note here..."></textarea>
+        
+                <!-- Add a button to save the note -->
+                <button onclick="saveNote()" class="animated-box-shadow animated-slide-in">Save Note</button>
+        
+                <!-- Display saved notes -->
+                <div id="savedNotes" class="saved-notes-container animated-box-shadow animated-slide-in">
+                    <!-- Saved notes will be displayed here -->
+                </div>
+               
+                <!-- New section for VAT calculation -->
+
+
+        </div>
+
     <div class="container">
-        <h1 class="animated-box-shadow animated-slide-in">LOBERCA Storage System</h1>
+        <h1 class="animated-box-shadow animated-slide-in">C0DZ1LLA System</h1>
 
                 <!-- Product Form -->
                 <form id="productForm">
@@ -69,45 +477,121 @@
         <div id="productList">
             <!-- Product details will be displayed here -->
         </div>
+<!-- Modal for Editing Products -->
+<div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit Product</h2>
+        <form id="editProductForm">
+            <!-- Form fields for editing a product -->
+            <label for="editProductName">Product Name:</label>
+            <input type="text" id="editProductName" name="editProductName" required>
+
+            <label for="editProductQuantity">Quantity:</label>
+            <input type="number" id="editProductQuantity" name="editProductQuantity" required>
+
+            <label for="editBulkPrice">Bulk Price:</label>
+            <input type="number" id="editBulkPrice" name="editBulkPrice" step="0.01" required>
+
+            <label for="editRetailPrice">Retail Price:</label>
+            <input type="number" id="editRetailPrice" name="editRetailPrice" step="0.01" required>
+
+            <label for="editIsBox">Box:</label>
+            <input type="checkbox" id="editIsBox" name="editIsBox">
+
+            <!-- Box Quantity input -->
+            <label for="editBoxQuantity">Box Quantity:</label>
+            <input type="number" id="editBoxQuantity" name="editBoxQuantity" min="1">
+
+            <!-- Add other fields as needed for editing -->
+
+            <button type="button" onclick="updateProduct()">Update Product</button>
+        </form>
+    </div>
+</div>
+
 
         <!-- Total Profit Difference -->
         <div id="totalProfit">
             <p>Total Profit : €<span id="totalProfitValue">0.00</span></p>
         </div>
+
+
+
+
     </div>
 </body>
 <script>
+    
     // Calculator functions
     function calculate(operation) {
-            var num1 = parseFloat(document.getElementById('num1').value);
-            var num2 = parseFloat(document.getElementById('num2').value);
-            var vatPercentage = parseFloat(document.getElementById('vatPercentage').value);
-            var result = 0;
+        var num1 = parseFloat(document.getElementById('num1').value);
+        var num2 = parseFloat(document.getElementById('num2').value);
+        var vatPercentage = parseFloat(document.getElementById('vatPercentage').value);
+        var result = 0;
 
-            switch (operation) {
-                case 'add':
-                    result = num1 + num2;
-                    break;
-                case 'subtract':
-                    result = num1 - num2;
-                    break;
-                case 'multiply':
-                    result = num1 * num2;
-                    break;
-                case 'divide':
-                    result = num1 / num2;
-                    break;
-                case 'vat':
-                    // Calculate VAT amount
-                    result = num1 * (vatPercentage / 100);
-                    break;
-                default:
-                    break;
-            }
-
-            document.getElementById('calcResult').textContent = result.toFixed(2);
+        switch (operation) {
+            case 'add':
+                result = num1 + num2;
+                break;
+            case 'subtract':
+                result = num1 - num2;
+                break;
+            case 'multiply':
+                result = num1 * num2;
+                break;
+            case 'divide':
+                result = num1 / num2;
+                break;
+            case 'vat':
+                // Calculate VAT amount
+                result = num1 * (vatPercentage / 100);
+                break;
+            default:
+                break;
         }
+
+        document.getElementById('calcResult').textContent = result.toFixed(2);
+    }
+
     </script>
+     <script>
+        // Function to save a note
+        function saveNote() {
+            var noteInput = document.getElementById("noteInput").value;
+
+            // Save the note locally (using localStorage)
+            var savedNotes = JSON.parse(localStorage.getItem('savedNotes')) || [];
+            savedNotes.push(noteInput);
+            localStorage.setItem('savedNotes', JSON.stringify(savedNotes));
+
+            // Update the displayed saved notes
+            updateSavedNotes();
+        }
+
+        // Function to update and display saved notes
+        function updateSavedNotes() {
+            var savedNotes = JSON.parse(localStorage.getItem('savedNotes')) || [];
+            var savedNotesDiv = document.getElementById('savedNotes');
+
+            // Clear previous content
+            savedNotesDiv.innerHTML = '';
+
+            // Display saved notes
+            savedNotes.forEach(function (note) {
+                var noteDiv = document.createElement('div');
+                noteDiv.className = 'saved-note';
+                noteDiv.textContent = note;
+                savedNotesDiv.appendChild(noteDiv);
+            });
+        }
+
+        // Initial update of saved notes when the page loads
+        updateSavedNotes();
+    </script>
+</body>
+</html>
+made by SAMAN
     </body>
 </html>
 
